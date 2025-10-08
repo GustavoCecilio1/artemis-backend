@@ -1,24 +1,9 @@
-import express from 'express'
-import cors from 'cors'
-import dotenv from 'dotenv'
-import driveRoutes from './driveRoutes.js'
-import sheetsRoutes from './sheetsRoutes.js'
+import config from './config/index.js'
+import { createApp } from './app.js'
 
-dotenv.config()
+const app = createApp()
 
-const app = express()
-
-app.use(cors())
-app.use(express.json())
-
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() })
-})
-
-app.use('/api/drive', driveRoutes)
-app.use('/api/sheets', sheetsRoutes)
-
-const port = process.env.PORT ?? 4000
+const port = config.port
 
 app.listen(port, () => {
   console.log(`✅ Backend Ártemis ↔ HRCA rodando na porta ${port}`)
