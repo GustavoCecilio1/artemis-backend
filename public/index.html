@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Ártemis ↔ HRCA</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand__logo">Δ</span>
+          <div>
+            <h1>Ártemis</h1>
+            <span class="brand__subtitle">Integração HRCA</span>
+          </div>
+        </div>
+        <nav class="menu">
+          <a href="#resumo" class="menu__item">Resumo</a>
+          <a href="#novos" class="menu__item">Novos pacientes</a>
+          <a href="#status" class="menu__item">Status</a>
+          <a href="#ultimos" class="menu__item">Últimas atualizações</a>
+        </nav>
+        <footer class="sidebar__footer">
+          <p>Google Drive &amp; Sheets</p>
+          <p class="sidebar__footer-highlight" id="last-sync">--</p>
+        </footer>
+      </aside>
+      <main class="content">
+        <header class="content__header">
+          <h2>Visão geral dos dados</h2>
+          <div class="actions">
+            <label class="actions__label" for="sheet-title">Aba da planilha</label>
+            <input id="sheet-title" type="text" value="Pagina1" />
+            <button id="refresh" type="button">Atualizar</button>
+          </div>
+        </header>
+
+        <section id="resumo" class="cards">
+          <article class="card">
+            <span class="card__label">Pacientes no Drive</span>
+            <strong class="card__value" id="drive-count">--</strong>
+            <span class="card__hint">Pastas sob a raiz configurada</span>
+          </article>
+          <article class="card">
+            <span class="card__label">Entradas na planilha</span>
+            <strong class="card__value" id="sheet-count">--</strong>
+            <span class="card__hint">Linhas com pacientes no controle</span>
+          </article>
+          <article class="card card--accent">
+            <span class="card__label">Pendentes de registro</span>
+            <strong class="card__value" id="pending-count">--</strong>
+            <span class="card__hint">Pacientes no Drive sem linha na planilha</span>
+          </article>
+        </section>
+
+        <section id="status" class="panel">
+          <header class="panel__header">
+            <h3>Status na planilha</h3>
+            <span id="status-total">--</span>
+          </header>
+          <div class="status-grid" id="status-grid"></div>
+        </section>
+
+        <section id="novos" class="panel">
+          <header class="panel__header">
+            <h3>Novos pacientes encontrados no Drive</h3>
+            <span id="pending-total">--</span>
+          </header>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Paciente</th>
+                  <th>Data de criação</th>
+                  <th>ID da pasta</th>
+                </tr>
+              </thead>
+              <tbody id="pending-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="ultimos" class="panel">
+          <header class="panel__header">
+            <h3>Últimas atualizações no Drive</h3>
+            <span id="recent-total">--</span>
+          </header>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Paciente</th>
+                  <th>Criado em</th>
+                  <th>Modificado em</th>
+                  <th>ID da pasta</th>
+                </tr>
+              </thead>
+              <tbody id="recent-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

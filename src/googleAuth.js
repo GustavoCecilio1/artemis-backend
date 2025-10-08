@@ -1,16 +1,16 @@
 import { google } from 'googleapis'
 import path from 'path'
 import fs from 'fs'
-import dotenv from 'dotenv'
+import config from './config/index.js'
 
-dotenv.config()
-
-let keyFile = process.env.GOOGLE_APPLICATION_CREDENTIALS
+let keyFile = config.google.credentialsPath
 
 if (!keyFile) {
-  const jsonContent = process.env.GOOGLE_SERVICE_ACCOUNT_JSON
+  const jsonContent = config.google.credentialsJson
   if (!jsonContent) {
-    throw new Error('Defina GOOGLE_APPLICATION_CREDENTIALS ou GOOGLE_SERVICE_ACCOUNT_JSON com o conteúdo da service account.')
+    throw new Error(
+      'Defina GOOGLE_APPLICATION_CREDENTIALS ou GOOGLE_SERVICE_ACCOUNT_JSON com o conteúdo da service account.',
+    )
   }
   const tmpPath = path.resolve('/tmp/google-service-account.json')
   try {
@@ -25,7 +25,9 @@ if (!keyFile) {
 const resolvedKeyFile = path.isAbsolute(keyFile) ? keyFile : path.resolve(process.cwd(), keyFile)
 
 if (!fs.existsSync(resolvedKeyFile)) {
-  throw new Error(`Arquivo de credenciais não encontrado em ${resolvedKeyFile}. Informe um caminho válido ou preencha GOOGLE_SERVICE_ACCOUNT_JSON.`)
+  throw new Error(
+    `Arquivo de credenciais não encontrado em ${resolvedKeyFile}. Informe um caminho válido ou preencha GOOGLE_SERVICE_ACCOUNT_JSON.`,
+  )
 }
 
 const scopes = [

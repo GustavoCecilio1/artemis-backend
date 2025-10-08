@@ -1,6 +1,8 @@
 # Ártemis ↔ HRCA – Backend
 
-API em Node/Express para integrar o dashboard com Google Drive e Google Sheets usando uma service account.
+API em Node/Express para integrar o dashboard com Google Drive e Google Sheets usando uma service account, com
+arquitetura em camadas (config → serviços → controladores → rotas) e um dashboard web responsivo servido pelo próprio
+backend.
 
 ## Pré-requisitos
 
@@ -12,8 +14,8 @@ API em Node/Express para integrar o dashboard com Google Drive e Google Sheets u
 
 ## Configuração
 
-1. Copie o arquivo JSON baixado do Google Cloud para `server/google-service-account.json` (ou outro caminho à sua escolha).
-2. Crie um arquivo `.env` na pasta `server/` com:
+1. Copie o arquivo JSON baixado do Google Cloud para `google-service-account.json` na raiz do projeto (ou outro caminho à sua escolha).
+2. Crie um arquivo `.env` na raiz do projeto com:
 
    ```env
    PORT=4000
@@ -25,7 +27,6 @@ API em Node/Express para integrar o dashboard com Google Drive e Google Sheets u
 3. Instale as dependências:
 
    ```bash
-   cd server
    npm install
    ```
 
@@ -35,7 +36,8 @@ API em Node/Express para integrar o dashboard com Google Drive e Google Sheets u
    npm run dev
    ```
 
-   A API sobe em `http://localhost:4000`.
+   A API sobe em `http://localhost:4000`. O dashboard pode ser acessado em `http://localhost:4000/` e consome o endpoint
+   `GET /api/dashboard/summary` para exibir os indicadores consolidados.
 
 ### Usando variáveis em produção
 
@@ -53,6 +55,10 @@ O backend cria automaticamente `/tmp/google-service-account.json` quando `GOOGLE
 - `POST /api/drive/patients/:patientId/upload` – upload de arquivo (campo `file` multipart/form-data).
 - `GET /api/sheets/rows?range=Controle!A:F` – lê linhas da planilha.
 - `POST /api/sheets/append` – adiciona linhas (`{ "values": [[...]] }`).
+- `POST /api/sheets/update` – atualiza um intervalo específico.
+- `POST /api/sheets/clear` – limpa um intervalo da planilha.
+- `POST /api/sheets/setup-table` – limpa/atualiza cabeçalhos, congela linha e aplica formatação na aba indicada.
+- `GET /api/dashboard/summary` – retorna contadores consolidados (Drive x Planilha), pendências e pastas recentes para o dashboard.
 
 > Garanta que a service account tem acesso de Editor tanto à planilha quanto à pasta/drive compartilhado no Google Drive.
 
@@ -60,7 +66,8 @@ O backend cria automaticamente `/tmp/google-service-account.json` quando `GOOGLE
 
 - Nunca commite o arquivo `.env` nem o `google-service-account.json`.
 - Use Secret Manager/variáveis de ambiente no serviço de hospedagem para armazenar esses dados.
-- Ajuste o front para consumir `http://seu-servidor/api/...` e utilizar os `driveFolderId` retornados pela API real.
+- O dashboard pronto em `http://seu-servidor/` já consome `http://seu-servidor/api/...` e pode ser utilizado como ponto de
+  partida ou monitoramento operacional.
 
 ### Agendando o sincronizador em serviços cloud
 
