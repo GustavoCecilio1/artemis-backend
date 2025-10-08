@@ -1,3 +1,4 @@
+import AppError from './utils/AppError.js'
 import { drive } from './googleAuth.js'
 
 export async function getFolderInfo(folderId) {
@@ -28,13 +29,11 @@ export async function ensureFolderAccessible(folderId) {
     return await getFolderInfo(folderId)
   } catch (error) {
     const message = error?.errors?.[0]?.message || error?.message
-    const err = new Error(
-      `Não foi possível acessar a pasta raiz ${folderId}. ` +
-        'Verifique se o ID está correto e se a service account possui permissão (Editor) na pasta ou no Drive compartilhado. ' +
-        `Detalhes: ${message}`,
+    throw new AppError(
+      `Não foi possível acessar a pasta raiz ${folderId}. Verifique se o ID está correto e se a service account possui permissão (Editor) na pasta ou no Drive compartilhado. Detalhes: ${message}`,
+      403,
+      { originalMessage: message },
     )
-    err.original = error
-    throw err
   }
 }
 
