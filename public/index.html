@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Ártemis ↔ HRCA</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand__logo">Δ</span>
+          <div>
+            <h1>Ártemis</h1>
+            <span class="brand__subtitle">Integração HRCA</span>
+          </div>
+        </div>
+        <nav class="menu">
+          <a href="#resumo" class="menu__item">Resumo</a>
+          <a href="#kpis" class="menu__item">KPIs</a>
+          <a href="#visoes" class="menu__item">Visões</a>
+          <a href="#tabelas" class="menu__item">Tabelas</a>
+          <a href="#acoes" class="menu__item">Ações</a>
+        </nav>
+        <footer class="sidebar__footer">
+          <p>Google Drive &amp; Sheets</p>
+          <p class="sidebar__footer-highlight" id="last-sync">--</p>
+        </footer>
+      </aside>
+      <main class="content">
+        <header class="content__header">
+          <div class="content__title">
+            <h2>Visão geral dos dados</h2>
+            <p class="content__subtitle" id="role-context">Selecione uma visão para começar.</p>
+          </div>
+          <div class="header-tools">
+            <div class="actions">
+              <label class="actions__label" for="sheet-title">Aba da planilha</label>
+              <input id="sheet-title" type="text" value="Pagina1" />
+              <button id="refresh" type="button">Atualizar</button>
+            </div>
+            <div class="session" id="session-box">
+              <div class="session__info">
+                <strong id="session-display">Desconectado</strong>
+                <span id="session-role">—</span>
+              </div>
+              <button id="logout" type="button" class="session__logout">Sair</button>
+            </div>
+          </div>
+        </header>
+
+        <section id="resumo" class="cards">
+          <article class="card">
+            <span class="card__label">Pacientes no Drive</span>
+            <strong class="card__value" id="drive-total">--</strong>
+            <span class="card__hint">Pastas sob a raiz configurada</span>
+          </article>
+          <article class="card">
+            <span class="card__label">Entradas na planilha</span>
+            <strong class="card__value" id="sheet-total">--</strong>
+            <span class="card__hint">Linhas sincronizadas com o HRCA</span>
+          </article>
+          <article class="card card--accent">
+            <span class="card__label">SLA crítico 48h</span>
+            <strong class="card__value" id="sla-critical">--</strong>
+            <span class="card__hint">Pendências com risco elevado</span>
+          </article>
+          <article class="card">
+            <span class="card__label">Pendências abertas</span>
+            <strong class="card__value" id="open-pendencies">--</strong>
+            <span class="card__hint">Registros aguardando assinatura</span>
+          </article>
+        </section>
+
+        <section id="kpis" class="panel">
+          <header class="panel__header">
+            <h3>KPIs</h3>
+            <span id="kpi-context">Últimos 7 dias</span>
+          </header>
+          <div class="kpi-grid" id="kpi-grid"></div>
+        </section>
+
+        <section id="visoes" class="panel">
+          <header class="panel__header panel__header--stacked">
+            <div>
+              <h3>Visões por papel</h3>
+              <p class="panel__subtitle">Admin · Operações · Revisor · Médico · HRCA</p>
+            </div>
+            <div class="role-tabs" id="role-tabs"></div>
+          </header>
+          <div id="role-content" class="role-content"></div>
+        </section>
+
+        <section id="tabelas" class="panel">
+          <header class="panel__header panel__header--stacked">
+            <div>
+              <h3>Tabelas operacionais</h3>
+              <p class="panel__subtitle">Pendências SLA · Fila 18:00 · Assinaturas · Protocolo semanal</p>
+            </div>
+          </header>
+          <div class="tables-grid" id="tables-grid"></div>
+        </section>
+
+        <section id="acoes" class="panel">
+          <header class="panel__header">
+            <h3>Ações rápidas</h3>
+            <span class="panel__subtitle">Notificar · Redistribuir · Exportar CSV · Gerar Protocolo</span>
+          </header>
+          <div class="actions-grid" id="actions-grid"></div>
+        </section>
+      </main>
+    </div>
+    <div class="login-overlay hidden" id="login-overlay">
+      <form class="login-card" id="login-form" autocomplete="off">
+        <h3>Acessar dashboard</h3>
+        <p class="login-card__subtitle">Informe suas credenciais de usuário.</p>
+        <div class="login-card__field">
+          <label for="login-username">Usuário</label>
+          <input id="login-username" name="username" type="text" required autocomplete="username" />
+        </div>
+        <div class="login-card__field">
+          <label for="login-password">Senha</label>
+          <input
+            id="login-password"
+            name="password"
+            type="password"
+            required
+            autocomplete="current-password"
+          />
+        </div>
+        <p class="login-card__error" id="login-error" role="alert"></p>
+        <button type="submit" class="login-card__submit">Entrar</button>
+      </form>
+    </div>
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
